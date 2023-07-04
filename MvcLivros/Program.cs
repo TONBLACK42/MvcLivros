@@ -1,4 +1,10 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MvcLivros.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<MvcLivrosContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MvcLivrosContext") ?? throw new InvalidOperationException("Connection string 'MvcLivrosContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
