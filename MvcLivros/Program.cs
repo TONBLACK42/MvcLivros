@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MvcLivros.Data;
+using MvcLivros.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MvcLivrosContext>(options =>
@@ -10,6 +11,14 @@ builder.Services.AddDbContext<MvcLivrosContext>(options =>
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+//Propagar o banco de dados de Teste com carga Inicial.
+using(var scope = app.Services.CreateScope())
+{
+    var servises = scope.ServiceProvider;
+
+    SeedData.Initialize(servises);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
