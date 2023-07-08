@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.View;
 using MvcLivros.Data;
 using MvcLivros.Models;
 
@@ -20,11 +21,27 @@ namespace MvcLivros.Controllers
         }
 
         // GET: Livros
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-              return _context.Livro != null ? 
-                          View(await _context.Livro.ToListAsync()) :
-                          Problem("Entity set 'MvcLivrosContext.Livro'  is null.");
+
+            if(_context.Livro != null)
+            {
+                return Problem("Entidade defina 'MvcLivroContext.Livro' é nula.");
+            }
+
+            //consulta LINQ para selecionar Livros
+            var livros = from m in _context.Livro select m;
+            
+            //Modifica a consulta LINQ para adicionar parametro de pesquisa.
+            if(!String.IsNullOrEmpty(searchString))
+            {
+                //Expressão Lambda na clausula Where para pesquisar por títulos.
+                livros = livros.Where(l => l.Titulo!.Contains(searchString));
+            }
+
+            //Executa a consulta LINQ e retorna a coleção de Livros.
+            return View(await livros.ToListAsync());
+             
         }
 
         // GET: Livros/Details/5
@@ -87,7 +104,7 @@ namespace MvcLivros.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken] //prevenir a falsificação de uma solicitação
         public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,DataLancamento,Genero,Preco")] Livro livro)
         {
             if (id != livro.Id)
@@ -95,6 +112,7 @@ namespace MvcLivros.Controllers
                 return NotFound();
             }
 
+            //Verifica se os dados enviados no formulário podem ser usados para modificar (editar ou atualizar) um objeto.
             if (ModelState.IsValid)
             {
                 try

@@ -13,7 +13,7 @@ namespace MvcLivros.Models
         [Display(Name = "Título")] //Alias para Coluna
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Messages))] //A propriedade deve ter um valor. Mas não impede que esse valor seja um " "
         [StringLength(60, MinimumLength = 3, ErrorMessageResourceName = "MinimumLength", ErrorMessageResourceType = typeof(Messages))] //MinimumLength = A propriedade deve ter um valor. Mas não impede que esse valor seja um " 
-        [RegularExpression(@"^[A-Z]+[A-zÀ-ú '´]*$", ErrorMessageResourceName = "RegularExpression", ErrorMessageResourceType = typeof(Messages))]//é usado para limitar quais caracteres podem ser inseridos.  
+        [RegularExpression(@"^[^\s].*", ErrorMessageResourceName = "RegularExpression", ErrorMessageResourceType = typeof(Messages))]//é usado para limitar quais caracteres podem ser inseridos.  
         public string? Titulo { get; set; }
 
 
