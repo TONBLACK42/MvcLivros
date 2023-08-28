@@ -24,7 +24,7 @@ namespace MvcLivros.Controllers
         public async Task<IActionResult> Index(string searchString)
         {
 
-            if(_context.Livro != null)
+            if(_context.Livro == null)
             {
                 return Problem("Entidade defina 'MvcLivroContext.Livro' é nula.");
             }

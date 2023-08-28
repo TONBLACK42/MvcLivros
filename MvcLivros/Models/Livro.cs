@@ -17,6 +17,10 @@ namespace MvcLivros.Models
         public string? Titulo { get; set; }
 
 
+        //public string? IdVolumeGoogleBook { get; set; }
+
+
+
         [Display(Name = "Lançado em")]
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Messages))]
         [DataType(DataType.Date)] //Especifica o tipo de dados (Data) e, portanto, as informações de hora armazenadas no campo não são exibidas.
